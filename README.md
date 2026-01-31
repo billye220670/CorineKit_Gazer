@@ -91,8 +91,8 @@
 ### 构建步骤
 1. 克隆仓库：
 ```bash
-git clone https://github.com/billye220670/Gazer4.0.git
-cd Gazer4.0
+git clone https://github.com/billye220670/CorineKit_Gazer.git
+cd CorineKit_Gazer
 ```
 
 2. 使用 Visual Studio 打开 `Gazer4.0.sln`
@@ -143,8 +143,8 @@ Gazer4.0/
 
 ## 联系方式
 
-- GitHub：[billye220670/Gazer4.0](https://github.com/billye220670/Gazer4.0)
-- 问题反馈：[Issues](https://github.com/billye220670/Gazer4.0/issues)
+- GitHub：[billye220670/CorineKit_Gazer](https://github.com/billye220670/CorineKit_Gazer)
+- 问题反馈：[Issues](https://github.com/billye220670/CorineKit_Gazer/issues)
 
 ## 更新日志
 
