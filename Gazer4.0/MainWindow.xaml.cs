@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -297,9 +297,9 @@ namespace ImageViewer
         private void ChkShowNotifications_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled) return;
-    
+
             settings.ShowNotifications = chkShowNotifications.IsChecked == true;
-            //SaveSettings();
+            settings.Save();
         }
         // 更新播放列表控件的启用状态
         private void UpdatePlayListControlsState()
@@ -484,9 +484,10 @@ namespace ImageViewer
         private void ChkAutoPlay_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled || settings == null) return;
-    
+
             settings.AutoPlayEnabled = chkAutoPlay.IsChecked == true;
-    
+            settings.Save();
+
             if (settings.AutoPlayEnabled && isPlayListMode)
             {
                 // 只有在播放列表模式下才启动
@@ -507,10 +508,11 @@ namespace ImageViewer
         private void SliderAutoPlayInterval_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!eventsEnabled || settings == null) return;
-    
+
             settings.AutoPlayInterval = sliderAutoPlayInterval.Value;
             lblAutoPlayInterval.Text = $"{settings.AutoPlayInterval:F1}s";
-    
+            settings.Save();
+
             // 如果正在自动播放，更新定时器间隔
             if (autoPlayTimer.IsEnabled)
             {
@@ -521,9 +523,10 @@ namespace ImageViewer
         private void SliderAutoPlayRandomness_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!eventsEnabled || settings == null) return;
-    
+
             settings.AutoPlayRandomness = sliderAutoPlayRandomness.Value;
             lblAutoPlayRandomness.Text = $"{settings.AutoPlayRandomness:F0}%";
+            settings.Save();
         }
         private void StartAutoPlay()
         {
@@ -611,8 +614,9 @@ namespace ImageViewer
         private void ChkRandomPlayback_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled || settings == null) return;
-    
+
             settings.RandomPlayback = chkRandomPlayback.IsChecked == true;
+            settings.Save();
         }
         private void ApplySettingsToUI()
         {
@@ -1860,24 +1864,26 @@ private string GetCurrentModeStatus()
         private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!eventsEnabled || settings == null || !IsLoaded) return;
-            
+
             currentBackgroundColor = Color.FromRgb(
                 (byte)sliderRed.Value,
                 (byte)sliderGreen.Value,
                 (byte)sliderBlue.Value);
-                
+
             UpdateColorPreview();
-            
+
             // 更新设置
             settings.SetBackgroundColor(currentBackgroundColor);
+            settings.Save();
         }
         
         private void ChkAutoSizeWindow_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled || settings == null) return;
-            
+
             settings.AutoSizeWindow = chkAutoSizeWindow.IsChecked ?? true;
-            
+            settings.Save();
+
             // 如果当前已加载图片且选项被启用，则重新调整窗口大小
             if (settings.AutoSizeWindow && imgDisplay.Source != null)
             {
@@ -1888,21 +1894,22 @@ private string GetCurrentModeStatus()
         private void ChkAutoBorderless_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled || settings == null) return;
-            
+
             settings.AutoBorderless = chkAutoBorderless.IsChecked ?? true;
-        
+            settings.Save();
         }
         private void ChkEnableShake_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled || settings == null) return;
-            
+
             settings.EnableShake = chkEnableShake.IsChecked ?? false;
+            settings.Save();
         }
         
         private void ShakeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!eventsEnabled || settings == null || !IsLoaded) return;
-            
+
             if (sender == sliderShakeAmount)
             {
                 settings.ShakeAmount = sliderShakeAmount.Value;
@@ -1911,15 +1918,17 @@ private string GetCurrentModeStatus()
             {
                 settings.ShakeFrequency = sliderShakeFrequency.Value;
             }
+            settings.Save();
         }
         
         // 脉冲相关方法
         private void ChkEnablePulse_Changed(object sender, RoutedEventArgs e)
         {
             if (!eventsEnabled || settings == null) return;
-            
+
             settings.EnablePulse = chkEnablePulse.IsChecked ?? false;
-            
+            settings.Save();
+
             // 如果启用脉冲，重置计时器
             if (settings.EnablePulse)
             {
@@ -1960,7 +1969,7 @@ private string GetCurrentModeStatus()
         private void PulseSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!eventsEnabled || settings == null || !IsLoaded) return;
-            
+
             if (sender == sliderPulseInterval)
             {
                 settings.PulseInterval = sliderPulseInterval.Value;
@@ -1981,6 +1990,7 @@ private string GetCurrentModeStatus()
             {
                 settings.PulsePowerY = sliderPulsePowerY.Value;
             }
+            settings.Save();
         }
         
         private void BtnTriggerPulse_Click(object sender, RoutedEventArgs e)
